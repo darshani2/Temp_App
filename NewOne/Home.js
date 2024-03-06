@@ -1,16 +1,45 @@
-// App.js
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, Button, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useDrawerStatus } from '@react-navigation/drawer';
+
+
+export default function Home() {
+  const nav = useNavigation();
+  const drawerStatus = useDrawerStatus();
+  console.log(drawerStatus);
+
+  return (
+    <View style={styles.container}>
+      <Text>Welcome Home!</Text>
+      <Button title='Open' onPress={() => nav.openDrawer()} />
+      <Button title='Close' onPress={() => nav.closeDrawer()} />
+      <Button title='Toggle' onPress={() => nav.toggleDrawer()} />
+      <Button title='Go to settings' onPress={() => nav.navigate("Settings")} />
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+/*
+
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import { initializeApp } from '@firebase/app';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
-import Navigation from './Navigation';
-import AuthScreen from './AuthScreen';
-import AuthenticatedScreen from './AuthenticatedScreen';
-import Home from './Home';
-import Settings from './Settings';
+
 
 const firebaseConfig = {
- apiKey: "YOUR - apiKey",
+  apiKey: "YOUR - apiKey",
   authDomain: "YOUR - authDomain",
   projectId: "YOUR - projectId",
   storageBucket: "YOUR - storageBucket",
@@ -21,7 +50,49 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const App = () => {
+const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogin, handleAuthentication }) => {
+  return (
+    <View style={styles.authContainer}>
+       <Text style={styles.title}>{isLogin ? 'Sign In' : 'Sign Up'}</Text>
+
+       <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        secureTextEntry
+      />
+      <View style={styles.buttonContainer}>
+        <Button title={isLogin ? 'Sign In' : 'Sign Up'} onPress={handleAuthentication} color="#3498db" />
+      </View>
+
+      <View style={styles.bottomContainer}>
+        <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>
+          {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+
+const AuthenticatedScreen = ({ user, handleAuthentication }) => {
+  return (
+    <View style={styles.authContainer}>
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.emailText}>{user.email}</Text>
+      <Button title="Logout" onPress={handleAuthentication} color="#e74c3c" />
+    </View>
+  );
+};
+export default App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null); // Track user authentication state
@@ -36,6 +107,7 @@ const App = () => {
     return () => unsubscribe();
   }, [auth]);
 
+  
   const handleAuthentication = async () => {
     try {
       if (user) {
@@ -78,17 +150,9 @@ const App = () => {
       )}
     </ScrollView>
   );
-};
-
+}
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#f0f0f0',
-  },
- container: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -133,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+*/
